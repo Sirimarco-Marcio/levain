@@ -92,11 +92,18 @@ git commit -m "<conventional commit message>"
 ### Step 5: Push & Create Pull Request / Merge Request (Default Path)
 Unless the user explicitly opted out in Step 3, complete the integration:
 1. **Push to Remote:**
-   ```bash
-   git push -u origin <current-branch>
-   ```
+   - Dynamically detect the active local branch:
+     ```bash
+     git branch --show-current
+     ```
+   - Push the active branch to origin:
+     ```bash
+     git push -u origin <current-branch>
+     ```
 2. **Create the Pull Request / Merge Request:**
-   - **Fork vs Upstream:** When working in a personal fork (e.g. `<username>/levain`), target the official upstream repository (`jmoalves/levain`), specifying `head: "<username>:<branch>"` and `base: "deno2_opus"` (or `master`).
-   - **Direct REST API (Zero external tool requirement):** The assistant can create the PR directly via GitHub/GitLab REST API (`POST https://api.github.com/repos/{upstream_owner}/{repo}/pulls` or GitLab API) using repository credentials/tokens. CLI tools like `gh` are **not** required.
-   - **CLI Tools (Optional):** If `gh` or `glab` is installed and authenticated, `gh pr create --repo <upstream_owner>/<repo>` can also be used.
-   - **Interactive Result:** Always return the final PR/MR link (e.g. `https://github.com/<upstream_owner>/<repo>/pull/<id>`) to the user.
+   - **Dynamic Branch Resolution (Zero Hardcoded Branches):** Always follow the branch active at integration time:
+     - `head`: `<username>:<current-branch>` (when working from a fork) or `<current-branch>` (if working directly on upstream).
+     - `base`: The base branch from which the current branch originated (determined dynamically via git tracking or merge base).
+   - **Direct REST API (Zero external tool requirement):** Create the PR directly via GitHub/GitLab REST API (`POST https://api.github.com/repos/{upstream_owner}/{repo}/pulls` or GitLab API) using repository credentials/tokens. CLI tools like `gh` are **not** required.
+   - **CLI Tools (Optional):** If `gh` or `glab` is installed and authenticated, `gh pr create` can also be used.
+   - **Interactive Result:** Always return the final PR/MR link to the user.

@@ -40,8 +40,8 @@ Before creating a commit, proposing a Pull Request, or concluding any task:
    - Always present the proposed commit message and list of changed files to the user for explicit approval first.
    - **Default path:** Approving the proposal implicitly approves `git commit` + `git push` + PR/MR creation. If the user wants to commit only without push or PR, they will specify it during confirmation.
 5. **Push & Pull Request (PR/MR) Creation:**
-   - Push to remote (`git push -u origin <branch>`).
-   - Create the PR/MR automatically targeting the upstream repository (`jmoalves/levain`, via direct GitHub/GitLab REST API, requiring no `gh` CLI) and provide the live link.
+   - Push the active branch to remote (`git push -u origin <current-branch>`).
+   - Create the PR/MR automatically targeting the upstream repository (`jmoalves/levain`, via direct GitHub/GitLab REST API, requiring no `gh` CLI) dynamically detecting the active working branch and its corresponding base branch at integration time, and provide the live link.
 
 ---
 
